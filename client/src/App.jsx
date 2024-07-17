@@ -1,13 +1,12 @@
 
-import './App.css'
 
 function App() {
 
-  return (
-    <>
-
-    </>
-  )
+    return (
+        <>
+            <h1>Games Play</h1>
+        </>
+    )
 }
 
 export default App
