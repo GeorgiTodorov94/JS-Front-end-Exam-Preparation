@@ -41,18 +41,17 @@ export default function GameDetails() {
                     {game.summary}
                 </p>
 
-                {/* <div className="details-comments">
+                <div className="details-comments">
                     <h2>Comments:</h2>
                     <ul>
-                        <li className="comment">
-                            <p>Content: I rate this one quite highly.</p>
-                        </li>
-                        <li className="comment">
-                            <p>Content: The best game.</p>
-                        </li>
+                        {game.comments && Object.values(game.comments).map(comment => (
+                            <li key={comment._id} className="comment">
+                                <p>{comment.username} : {comment.text}</p>
+                            </li>
+                        ))}
                     </ul>
                     <p className="no-comment">No comments.</p>
-                </div> */}
+                </div>
 
                 {/* <div className="buttons">
                     <a href="#" className="button">Edit</a>
