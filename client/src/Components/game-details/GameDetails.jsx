@@ -19,9 +19,17 @@ export default function GameDetails() {
 
     const commentSubmitHandler = async (e) => {
         e.preventDefault();
-        await commentApi.create(gameId, username, comment);
+        const newComment = await commentApi.create(gameId, username, comment);
 
-    }
+
+        setGame(prevState => ({
+            ...prevState,
+            comments: {
+                ...prevState.comments,
+                [newComment._id]: newComment,
+            }
+        }));
+    };
 
 
 
@@ -46,7 +54,7 @@ export default function GameDetails() {
                     <ul>
                         {game.comments && Object.values(game.comments).map(comment => (
                             <li key={comment._id} className="comment">
-                                <p>{comment.username} : {comment.text}</p>
+                                <p>{comment.username}: {comment.text}</p>
                             </li>
                         ))}
                     </ul>
