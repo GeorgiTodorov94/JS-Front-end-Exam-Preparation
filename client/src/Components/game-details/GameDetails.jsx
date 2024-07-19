@@ -1,10 +1,13 @@
 import gamesAPI from "../../api/games-api"
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import commentApi from "../../api/comment-api"
 export default function GameDetails() {
 
 
     const [game, setGame] = useState({})
+    const [comment, setComment] = useState('');
+    const [username, setUsername] = useState('')
     const { gameId } = useParams()
 
     useEffect(() => {
@@ -12,7 +15,16 @@ export default function GameDetails() {
             const result = await gamesAPI.getOne(gameId);
             setGame(result)
         })()
-    }, [])
+    }, []);
+
+    const commentSubmitHandler = async (e) => {
+        e.preventDefault();
+        await commentApi.create(gameId, username, comment);
+
+    }
+
+
+
     return (
         <section id="game-details">
             <h1>Game Details</h1>
@@ -29,7 +41,7 @@ export default function GameDetails() {
                     {game.summary}
                 </p>
 
-                <div className="details-comments">
+                {/* <div className="details-comments">
                     <h2>Comments:</h2>
                     <ul>
                         <li className="comment">
@@ -40,18 +52,30 @@ export default function GameDetails() {
                         </li>
                     </ul>
                     <p className="no-comment">No comments.</p>
-                </div>
+                </div> */}
 
-                <div className="buttons">
+                {/* <div className="buttons">
                     <a href="#" className="button">Edit</a>
                     <a href="#" className="button">Delete</a>
-                </div>
+                </div> */}
             </div>
 
             <article className="create-comment">
                 <label>Add new comment:</label>
-                <form className="form">
-                    <textarea name="comment" placeholder="Comment......"></textarea>
+                <form className="form" onSubmit={commentSubmitHandler}>
+                    <input
+                        type="text"
+                        placeholder="Pesho"
+                        name="username"
+                        onChange={(e) => setUsername(e.target.value)}
+                        value={username}
+                    />
+                    <textarea
+                        name="comment"
+                        placeholder="Comment......"
+                        onChange={(e) => setComment(e.target.value)}
+                        value={comment}
+                    ></textarea>
                     <input className="btn submit" type="submit" value="Add Comment" />
                 </form>
             </article>
