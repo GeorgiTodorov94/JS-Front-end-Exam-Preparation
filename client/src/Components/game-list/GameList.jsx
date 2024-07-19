@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as request from '../../api/requester'
-import * as gamesAPI from '../api/games-api'
+import gamesAPI from '../../api/games-api'
+import GameListItem from "./game-list-item/GameListItem";
 
 export default function GameList() {
     const [games, setGames] = useState([]);
@@ -13,47 +14,28 @@ export default function GameList() {
     //     })();
     // }, []);
 
-    // STUDY THIS FUNCTION!!!!
+    // STUDY THIS FUNCTION!!!! STUDY THIS FUNCTION !!!
+    // IMPLEMENT THIS IN MY PROJECT --- SO much easier......
 
     useEffect(() => {
-        gamesAPI.getAll()
-            .then(result => setGames(result))
+        (
+            async () => {
+                const games = await gamesAPI.getAll();
+
+                setGames(games)
+            }
+        )()
     }, [])
 
 
     return (
         <section id="catalog-page">
             <h1>All Games</h1>
-            {/* <!-- Display div: with information about every game (if any) --> */}
-            <div className="allGames">
-                <div className="allGames-info">
-                    <img src="./images/avatar-1.jpg" />
-                    <h6>Action</h6>
-                    <h2>Cover Fire</h2>
-                    <a href="#" className="details-button">Details</a>
-                </div>
 
-            </div>
-            <div className="allGames">
-                <div className="allGames-info">
-                    <img src="./images/avatar-1.jpg" />
-                    <h6>Action</h6>
-                    <h2>Zombie lang</h2>
-                    <a href="#" className="details-button">Details</a>
-                </div>
-
-            </div>
-            <div className="allGames">
-                <div className="allGames-info">
-                    <img src="./images/avatar-1.jpg" />
-                    <h6>Action</h6>
-                    <h2>MineCraft</h2>
-                    <a href="#" className="details-button">Details</a>
-                </div>
-            </div>
-
-            {/* <!-- Display paragraph: If there is no games  --> */}
-            <h3 className="no-articles">No articles yet</h3>
+            {games.length > 0
+                ? games.map(game => <GameListItem key={game._id} {...game} />)
+                : <h3 className="no-articles">No articles yet</h3>
+            }
         </section>
     )
 }
